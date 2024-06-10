@@ -1,0 +1,171 @@
+Git: https://github.com/TFS32/EndToEndDataEngineerProject.git
+
+-- To create the environment (environment name is barrera in this project):
+python -m venv ~/ENV3
+
+-- Then, to activate the environment in a specific folder (folder Scripts):
+source ~/ENV3/Scripts/activate
+
+-- If you want to set the default terminal:
+Click Ctrl + Shift + P to open prompt line,
+Then open "settings.json" (user settings)
+
+In the settings change to preferred terminal:
+"terminal.integrated.defaultProfile.windows": "Git Bash",
+
+-- -------------------------------------------------------------------
+-- Project architecture overview
+-- -------------------------------------------------------------------
+// Data collected in Postgres
+// Create a Warehouse, using Dagster, Airbyte and dbt
+// Airbyte to get the data
+// dbt to Transform
+// Dagster to a user friendly interface
+
+-- -------------------------------------------------------------------
+-- Open docker image
+-- -------------------------------------------------------------------
+// File database_config
+// Run docker in the bash
+// Open docker and go to containers, then terminal
+// Run SQL command line (psql), also can be run in pgAdmin or DBeaver
+// Make copies of tables, SQL synthax REPLICA IDENTITY DEFAULT
+
+// Create a replicate slot, called airbyte slot
+
+-- -------------------------------------------------------------------
+-- Why create a logical replication of data
+-- -------------------------------------------------------------------
+// Data Availability:
+	+ ensuring readily accessible copies of data
+	+ even when hardware fail or network is disruptive
+	+ redundancy minimizes the risk of data loss
+	
+// Data Synchrinization:
+	+ create a unified view of organization's data
+	+ sync between various systems
+	+ replicates data from a source to a system so destination is 
+		always up-to-date
+
+// Change Data Capture (CDC) Replication:
+	+ inserts, updates and deletes are reflected on destionation
+	+ destination database is always up-to-date
+
+// Data Analysis and Activation:
+	+ syncing transcation data to a data lake or data warehouse
+	
+// 	Load Balancing:
+	+ suitable for read-replica load-balancing
+	
+-- -------------------------------------------------------------------
+-- Cloud Data Warehouse 
+-- -------------------------------------------------------------------	
+// Google Big Query (also Snowflake or Redshift)
+// Create a project and click on Big Query
+// Create Big Query Data Editor
+
+-- -------------------------------------------------------------------
+-- ELT Tools: Extract, Load, Transform
+-- -------------------------------------------------------------------	
+// Airbyte (Open_source ELT Platform)
+	+ extract data from various sources
+	+ load into a wide range of destinations
+	+ deploying using docker containers
+	+ automate data extracting and loading
+	
+// Open console and clone Airbyte repo
+// Deploy it for data synchronization
+
+-- Synthax to open the platform
+./run-ab-platform.sh
+
+-- Create source in Airbyte
+-- On Docker Click on data name, then Inspect option in Containers
+
+// Setting up sources connections in Airbyte
+// The source are the tables from postgres
+// The destination is the Google Cloude BigQuery
+
++--------------------------------------------------------------------+
+|  It’s important to note that customization can be applied to each  |
+| table individually, allowing for specific rules to be defined per  |
+|table. When selecting the synchronization mode for the data stream, | 
+|   the data will be incremented. This is due to the choice of the   |
+|which ensures all changes are detected, resulting in continuous data|
+|    incrementation. Regarding the destination, the mode is set to   |
+|   ‘append + deduped’. In this mode, new data replaces older data,  |
+|while the older data is preserved in a separate table.This approach |
+|This approach ensures that the most recent data is always available,|
+|       while historical data remains accessible for reference.      |
++--------------------------------------------------------------------+
+
+// Final tables + history tables
+// Primary Key (PK) and cursor field is detected by framework (Airbyte)
+
++--------------------------------------------------------------------+
+|  https://docs.airbyte.com/using-airbyte/core-concepts/namespaces	 |
+|	Custom															 |
+| All streams will be replicated to a single user-defined namespace  |
+| 	Destination-defined												 |
+| All streams will be replicated to the single default namespace     |
+| defined in the Destination's settings                              |
+| 	Source-defined													 |
+|Some sources (for example, databases) provide namespace information |
+|    for a stream. If a source provides namespace information, the   |
+| destination will mirror the same namespace when this configuration |
+|  is set. For sources or streams where the source namespace is not  |
+|known, the behavior will default to the "Destination default" option|
++--------------------------------------------------------------------+
+
+-- -------------------------------------------------------------------
+-- Sync Now
+-- -------------------------------------------------------------------
+// Sync Now Button
+// Select Job History then click on syncing menu and View Logs
+
+-- -------------------------------------------------------------------
+-- Data Modeling
+-- -------------------------------------------------------------------
+// dbt - Data Built Tool 
+	+ Models
+	+ Testing
+	+ Documentation
+	+ Version Control
+	
+// Each model in dbt has a one-to-one relationship with a table
+// To every SQL model there is a table or view in the data warehouse
+
+// dbt run (interface with the data warehouse)
+// DDL - data definition language
+// DML - data manipulation language
+
+// interfaces with code, stored and managed in a git repo, and data
+
+// dbt CLI or dbt Cloud 
+
+// dbt Data Structure
+	+ Reduce redundancy
+	+ Reduce complexity
+
+-- CHALLENGE
+// Take Big Star Collectibles Transactions (Postgres database)
+// Source
+// Staging 
+// Marts
+// Data warehouse 
+	
+-- DIRECT ACYCLIC GRAPH (DAG)
+// dbt project employ a DAG
+
+-- -------------------------------------------------------------------
+-- dbt init
+-- -------------------------------------------------------------------
+// Creates a new folder with necessary files
+// Creates a connection profile called profiles.yml
+
+
+
+
+
+
+
